@@ -11,6 +11,10 @@ dotenv.config();
 //DB connection
 connectDB();
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swaggerConfig");
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(cors());
 app.use(express.json());

@@ -1,5 +1,4 @@
 const express = require("express");
-
 const authMiddleware = require("../middlewaare/authMiddleware");
 const {
   createFoodController,
@@ -15,34 +14,117 @@ const adminMiddleware = require("../middlewaare/adminMiddleware");
 
 const router = express.Router();
 
-//routes
-// Create Food || POST
+/**
+ * @swagger
+ * tags:
+ *   name: Foods
+ *   description: Food management APIs
+ */
+
+/**
+ * @swagger
+ * /api/v1/food/create:
+ *   post:
+ *     summary: Create a new food item
+ *     tags: [Foods]
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       201:
+ *         description: Food item created successfully
+ */
 router.post("/create", authMiddleware, createFoodController);
 
-// GET All Foods || GET
+/**
+ * @swagger
+ * /api/v1/food/getAll:
+ *   get:
+ *     summary: Get all food items
+ *     tags: [Foods]
+ *     responses:
+ *       200:
+ *         description: List of food items
+ */
 router.get("/getAll", getAllFoodController);
 
-// GET Foods by Id || GET
+/**
+ * @swagger
+ * /api/v1/food/get/{id}:
+ *   get:
+ *     summary: Get food item by ID
+ *     tags: [Foods]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Food ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Food item retrieved successfully
+ */
 router.get("/get/:id", getFoodByIdController);
 
-// GET Foods by Resturant Id || GET
+/**
+ * @swagger
+ * /api/v1/food/getByResturant/{id}:
+ *   get:
+ *     summary: Get all food items by restaurant ID
+ *     tags: [Foods]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Restaurant ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of food items from the restaurant
+ */
 router.get("/getByResturant/:id", getFoodByResturantController);
 
-// Update Food || PUT
+/**
+ * @swagger
+ * /api/v1/food/update/{id}:
+ *   put:
+ *     summary: Update a food item
+ *     tags: [Foods]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Food ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Food item updated successfully
+ */
 router.put("/update/:id", authMiddleware, updateFoodController);
 
-// Delete Food Item || DELETE
+/**
+ * @swagger
+ * /api/v1/food/delete/{id}:
+ *   delete:
+ *     summary: Delete a food item
+ *     tags: [Foods]
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Food ID
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Food item deleted successfully
+ */
 router.delete("/delete/:id", authMiddleware, deleteFoodItemController);
-
-// Place Order || POST
-router.post("/placeOrder", authMiddleware, placeOrderController);
-
-// Order Status || POST
-router.post(
-  "/orderStatus/:id",
-  authMiddleware,
-  adminMiddleware,
-  orderStatusController
-);
 
 module.exports = router;
